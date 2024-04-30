@@ -1,16 +1,16 @@
 const Curso = require('../models/Curso')
 
-class CursoController {
-    async cadastrar(req, res) {
+class CursoControle {
+    async cadastrar(req, res){
         try {
             const nome = req.body.nome
             const duracao_horas = req.body.duracao_horas
 
             if (!nome) {
-                return res.status(400).json({ erro: 'O nome deve ser informado' })
+                return res.status(400).json({ erro: 'O nome do curso deve ser informado.' })
             }
-            if (!(duracao_horas >= 40 && duracao_horas <= 200)) {
-                return res.status(400).json({ erro: 'A duração do curso deve ser informada de 40 a 200 horas' })
+            if (!duracao_horas) {
+                return res.status(400).json({ erro: 'A duração do curso deve ser informada.' })
             }
 
             const curso = await Curso.create({
@@ -20,73 +20,75 @@ class CursoController {
 
             res.status(201).json(curso)
         } catch (error) {
-            res.status(500).json({ erro: 'Não foi possível efetuar o cadastro' })
+            console.log(error.message)
+            res.status(500).json({erro: 'Não foi possível efetuar o cadastro do curso.'})
         }
     }
 
-    async listar(req, res) {
+    async listarTodos(req, res) {
         try {
-            let params = {}
-
-            if (req.query.nome) {
-                params = { ...params, nome: req.query.nome }
-            }
-            if (req.query.duracao_horas) {
-                params = { ...params, duracao_horas: req.query.duracao_horas }
-            }
-
-            const cursos = await Curso.findAll({
-                where: params
-            })
-
+            const cursos = await Curso.findAll()
             res.json(cursos)
         } catch (error) {
+            res.status(500).json({error: 'Não foi possível listar os cursos'})
+        }
+    }
+
+    async listarUm (req, res) {
+        try {
+            const {id} = req.params
+            const curso = await Curso.findByPk(id)
+
+            if (!curso){
+                return res.status(404).json({ erro: "Curso não encontrado." })
+            }
+
+            res.json(curso)
+        } catch (error) {
             console.log(error.message)
-            res.status(500).json({ error: 'Não foi possível listar os cursos' })
+            res.status(500).json({error: "Não foi possível localizar o curso."})
         }
     }
 
     async atualizar(req, res) {
-        const id = req.params.id
-        const { nome, duracao_horas } = req.body
-
+        const {id} = req.params
         try {
             const curso = await Curso.findByPk(id)
-
-            if (!curso) {
-                return res.status(400).json({ erro: 'Curso não encontrado' })
+            if(!curso) {
+                return res.status(400).json({erro: 'Curso não encontrado.'})
             }
-
-            await curso.update({
-                nome: nome,
-                duracao_horas: duracao_horas
-            })
-
+            await curso.update(req.body)
             await curso.save()
-
-            res.status(200).json({ mensagem: 'Alterado com sucesso!' })
+            res.status(200).json({mensagem: 'Alterado com sucesso!'})
         } catch (error) {
             console.log(error)
-            return res.status(500).json({ erro: 'Erro ao atualizar curso' })
+            return res.status(500).json({erro: 'Erro ao atualizar o curso.'})
         }
+
     }
 
     async excluir(req, res) {
         try {
-            const id = req.params.id
+            const {id} = req.params
             const curso = await Curso.findByPk(id)
-            
+
             if (!curso) {
-                return res.status(404).json({ erro: 'Curso não encontrado' })
+                return res.status(404).json({ erro: "Curso não foi encontrado" })
             }
 
-            await curso.destroy()
+            Aluno.destroy({
+                where: {
+                    id: id
+                }
+            })
 
-            return res.status(204).json({})
+            res.status(204).json({mensagem: 'Curso exclído com sucesso'})
         } catch (error) {
-            res.status(500).json({error: 'Não foi possível excluir o curso'})
+            console.log(error.message)
+            res.status(500).json({error: "Não foi possível atualizar o curso."})
         }
     }
 }
 
 module.exports = new CursoController()
+

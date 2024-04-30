@@ -60,10 +60,7 @@ class AlunoController {
             res.json(aluno)
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({
-                error: "Não foi possível localizar o aluno",
-                error: error
-            })
+            res.status(500).json({error: "Não foi possível localizar o aluno"})
         }
     }
 
