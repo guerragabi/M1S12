@@ -20,4 +20,4 @@ const Professor = connection.define("professores", {
   }
 });
 
-module.exports = Professor;
+module.exports = Professor

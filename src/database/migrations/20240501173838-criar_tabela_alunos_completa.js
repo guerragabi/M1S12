@@ -19,7 +19,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE
         },
-        celular: {
+        telefone: {
           allowNull: false,
           type: Sequelize.STRING
         },
@@ -49,3 +49,4 @@ module.exports = {
     await queryInterface.dropTable('alunos');
   }
 };
+
