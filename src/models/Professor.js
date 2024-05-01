@@ -11,7 +11,7 @@ const Professor = connection.define("professores", {
     type: DataTypes.DATE,
   },
 
-  celular: {
+  telefone: {
     type: DataTypes.STRING,
   },
 
