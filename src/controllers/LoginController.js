@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario')
 const {sign} = require('jsonwebtoken')
+const { compare, hash } = require("bcrypt")
 
 class LoginController {
     async logar(req, res) {
@@ -24,6 +25,12 @@ class LoginController {
                 return res.status(404).json({erro: "Nenhum usuário cadastrado com o email informado."})
             }
 
+            const hashSenha = await compare(password, usuario.password)
+
+            if(hashSenha === false) {
+                return res.status(400).json({mensagem: "Conta não encontrada."})
+            }
+
             const payload = {
                 sub: usuario.id,
                 email: usuario.email,
@@ -33,6 +40,7 @@ class LoginController {
             const token = sign(payload, process.env.SECRET_JWT)
 
             res.status(200).json({token: token})
+
         } catch (error) {
             console.log(error)
             return res.status(500).json({

@@ -57,6 +57,7 @@ class AlunoController {
             const aluno = await Aluno.findByPk(id)
 
             if (!aluno) {
+                console.log(error.message)
                 return res.status(404).json({ erro: "Nenhum aluno cadastrado com o id informado." })
             }
 
