@@ -1,7 +1,7 @@
 const {Router} = require('express')
 const cursoRoutes = new Router()
-const {auth} = require('../controllers/CursoController')
-const CursoController = require('..controllers/CursoController')
+const { auth } = require('../middleware/auth')
+const CursoController = require('../controllers/CursoController')
 
 cursoRoutes.post('/', CursoController.cadastrar)
 cursoRoutes.get('/', auth, CursoController.listarTodos)

@@ -1,6 +1,6 @@
 const Curso = require('../models/Curso')
 
-class CursoControle {
+class CursoController {
     async cadastrar(req, res){
         try {
             const nome = req.body.nome
