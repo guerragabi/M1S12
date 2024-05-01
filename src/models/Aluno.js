@@ -13,7 +13,7 @@ const Aluno = connection.define("alunos", {
     type: DataTypes.DATE,
   },
 
-  celular: {
+  telefone: {
     allowNull: false,
     type: DataTypes.STRING,
   },

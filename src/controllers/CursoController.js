@@ -7,10 +7,10 @@ class CursoControle {
             const duracao_horas = req.body.duracao_horas
 
             if (!nome) {
-                return res.status(400).json({ erro: 'O nome do curso deve ser informado.' })
+                return res.status(400).json({ erro: "Informe o nome do curso." })
             }
             if (!duracao_horas) {
-                return res.status(400).json({ erro: 'A duração do curso deve ser informada.' })
+                return res.status(400).json({ erro: "Informe a duração do curso." })
             }
 
             const curso = await Curso.create({
@@ -21,7 +21,7 @@ class CursoControle {
             res.status(201).json(curso)
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({erro: 'Não foi possível efetuar o cadastro do curso.'})
+            res.status(500).json({erro: "Não foi possível cadastrar o curso."})
         }
     }
 
@@ -30,7 +30,7 @@ class CursoControle {
             const cursos = await Curso.findAll()
             res.json(cursos)
         } catch (error) {
-            res.status(500).json({error: 'Não foi possível listar os cursos'})
+            res.status(500).json({error: "Não foi possível listar os cursos."})
         }
     }
 
@@ -40,13 +40,13 @@ class CursoControle {
             const curso = await Curso.findByPk(id)
 
             if (!curso){
-                return res.status(404).json({ erro: "Curso não encontrado." })
+                return res.status(404).json({ erro: "Nenhum curso cadastrado com o id informado." })
             }
 
             res.json(curso)
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({error: "Não foi possível localizar o curso."})
+            res.status(500).json({error: "Não foi possível listar o curso."})
         }
     }
 
@@ -55,14 +55,14 @@ class CursoControle {
         try {
             const curso = await Curso.findByPk(id)
             if(!curso) {
-                return res.status(400).json({erro: 'Curso não encontrado.'})
+                return res.status(400).json({erro: "Nenhum curso cadastrado com o id informado."})
             }
             await curso.update(req.body)
             await curso.save()
-            res.status(200).json({mensagem: 'Alterado com sucesso!'})
+            res.status(200).json({mensagem: "Cadastro atualizado com sucesso."})
         } catch (error) {
             console.log(error)
-            return res.status(500).json({erro: 'Erro ao atualizar o curso.'})
+            return res.status(500).json({erro: "Erro ao atualizar o cadastro."})
         }
 
     }
@@ -73,7 +73,7 @@ class CursoControle {
             const curso = await Curso.findByPk(id)
 
             if (!curso) {
-                return res.status(404).json({ erro: "Curso não foi encontrado" })
+                return res.status(404).json({ erro: "Nenhum curso cadastrado com o id informado." })
             }
 
             Aluno.destroy({
@@ -82,10 +82,10 @@ class CursoControle {
                 }
             })
 
-            res.status(204).json({mensagem: 'Curso exclído com sucesso'})
+            res.status(204).json({mensagem: "Cadastro excluído com sucesso."})
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({error: "Não foi possível atualizar o curso."})
+            res.status(500).json({error: "Não foi possível excluir o cadastro."})
         }
     }
 }
